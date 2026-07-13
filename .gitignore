@@ -1,0 +1,38 @@
+# Delphi / RAD Studio
+__history/
+__recovery/
+
+# IDE arquivos locais e cache
+*.identcache
+*.local
+*.tvsconfig
+
+# Diretórios de compilação
+Win32/
+Win64/
+Android/
+Android64/
+iOSDevice32/
+iOSDevice64/
+iOSSimulator/
+OSX32/
+OSX64/
+Linux64/
+
+# Arquivos gerados durante compilação
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.bpi
+*.dcp
+*.so
+*.apk
+*.drc
+*.map
+*.dres
+*.rsm
+*.tds
+*.dpc
+*.otares
+*.stat
