@@ -11,11 +11,14 @@ object Form1: TForm1
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  DesignSize = (
+    500
+    400)
   TextHeight = 17
   object Label1: TLabel
     Left = 20
     Top = 20
-    Width = 249
+    Width = 250
     Height = 21
     Caption = 'Qual alimento voc'#234' deseja buscar?'
     Font.Charset = DEFAULT_CHARSET
@@ -39,10 +42,11 @@ object Form1: TForm1
     Top = 53
     Width = 120
     Height = 30
+    Cursor = crHandPoint
     Anchors = [akTop, akRight]
     Caption = 'Buscar'
-    Cursor = crHandPoint
     TabOrder = 1
+    OnClick = btnBuscarClick
   end
   object memResultado: TMemo
     Left = 20
