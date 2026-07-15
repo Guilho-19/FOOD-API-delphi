@@ -30,7 +30,7 @@ uses uDMNutri;
 
 procedure TForm1.btnBuscarClick(Sender: TObject);
 var
-  responseJSON: string;
+  responseJSON, resumoTraduzido: string;
   rootJSON, foodsJSON: TJSONObject;
   foodArray: TJSONArray;
   primeiroAlimento: TJSONObject;
@@ -72,11 +72,22 @@ begin
               begin
                 primeiroALimento := foodArray.Items[0] as TJSONObject;
 
+                resumoTraduzido := primeiroAlimento.GetValue<string>('food_description');
+
+                resumoTraduzido := StringReplace(resumoTraduzido, 'Per', 'Por', [rfReplaceAll, rfIgnoreCase]);
+                resumoTraduzido := StringReplace(resumoTraduzido, 'Calories', 'Calorias:', [rfReplaceAll, rfIgnoreCase]);
+                resumoTraduzido := StringReplace(resumoTraduzido, 'Fat:', 'Gorduras:', [rfReplaceAll, rfIgnoreCase]);
+                resumoTraduzido := StringReplace(resumoTraduzido, 'Carbs:', 'Carboidratos:', [rfReplaceAll, rfIgnoreCase]);
+                resumoTraduzido := StringReplace(resumoTraduzido, 'Protein', 'Proteínas:', [rfReplaceAll, rfIgnoreCase]);
+
+
+
+
                 //memResultado.Lines.Clear
                 memResultado.Lines.Add('');
                 memResultado.Lines.Add('=== RESULTADO DA BUSCA ===');
                 memResultado.Lines.Add('Alimento: ' + primeiroALimento.GetValue<string>('food_name'));
-                memResultado.Lines.Add('Resumo: ' + primeiroAlimento.GetValue<string>('food_description'));
+                memResultado.Lines.Add('Resumo: ' + resumoTraduzido);
               end
               else
               begin

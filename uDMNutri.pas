@@ -49,6 +49,10 @@ begin
   requestAPI.Params.AddItem('search_expression', Alimento, pkGETorPOST);
   requestAPI.Params.AddItem('format', 'json', pkGETorPOST);
 
+  // Funcionalidade premium da FatSecretAPI
+  // requestAPI.Params.AddItem('language', 'pt', pkGETorPOST);
+  // requestAPI.Params.AddItem('region', 'BR', pkGETorPOST);
+
   try
     requestAPI.Execute;
 
