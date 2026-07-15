@@ -53,12 +53,6 @@ begin
       Application.ProcessMessages;
 
       responseJSON := dmNutri.ConsultarAlimento(edtAlimento.Text);
-
-      memResultado.Lines.Add('');
-      memResultado.Lines.Add('=== RETORNO DA API ===');
-      memResultado.Lines.Add('');
-      memResultado.Lines.Add(responseJSON);
-
       rootJSON := TJSONObject.ParseJSONValue(responseJSON) as TJSONObject;
 
       if Assigned(rootJSON) then
@@ -80,10 +74,7 @@ begin
                 resumoTraduzido := StringReplace(resumoTraduzido, 'Carbs:', 'Carboidratos:', [rfReplaceAll, rfIgnoreCase]);
                 resumoTraduzido := StringReplace(resumoTraduzido, 'Protein', 'Proteínas:', [rfReplaceAll, rfIgnoreCase]);
 
-
-
-
-                //memResultado.Lines.Clear
+                //memResultado.Lines.Clear;
                 memResultado.Lines.Add('');
                 memResultado.Lines.Add('=== RESULTADO DA BUSCA ===');
                 memResultado.Lines.Add('Alimento: ' + primeiroALimento.GetValue<string>('food_name'));
