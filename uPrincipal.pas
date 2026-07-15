@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.JSON;
 
 type
   TForm1 = class(TForm)
@@ -31,6 +31,9 @@ uses uDMNutri;
 procedure TForm1.btnBuscarClick(Sender: TObject);
 var
   responseJSON: string;
+  rootJSON, foodsJSON: TJSONObject;
+  foodArray: TJSONArray;
+  primeiroAlimento: TJSONObject;
 begin
   memResultado.Lines.Clear;
 
@@ -53,7 +56,38 @@ begin
 
       memResultado.Lines.Add('');
       memResultado.Lines.Add('=== RETORNO DA API ===');
+      memResultado.Lines.Add('');
       memResultado.Lines.Add(responseJSON);
+
+      rootJSON := TJSONObject.ParseJSONValue(responseJSON) as TJSONObject;
+
+      if Assigned(rootJSON) then
+      begin
+        try
+          if rootJSON.TryGetValue<TJSONObject>('foods', foodsJSON) then
+          begin
+            if foodsJSON.TryGetValue<TJSONArray>('food', foodArray) then
+            begin
+              if foodArray.Count > 0 then
+              begin
+                primeiroALimento := foodArray.Items[0] as TJSONObject;
+
+                //memResultado.Lines.Clear
+                memResultado.Lines.Add('');
+                memResultado.Lines.Add('=== RESULTADO DA BUSCA ===');
+                memResultado.Lines.Add('Alimento: ' + primeiroALimento.GetValue<string>('food_name'));
+                memResultado.Lines.Add('Resumo: ' + primeiroAlimento.GetValue<string>('food_description'));
+              end
+              else
+              begin
+                memResultado.Lines.Add('Nenhum alimento encontrado com esse nome!');
+              end;
+            end;
+          end;
+        finally
+          rootJSON.Free;
+        end;
+      end;
     end
     else
     begin
