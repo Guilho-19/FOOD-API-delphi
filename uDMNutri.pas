@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Classes, REST.Types, REST.Client,
   Data.Bind.Components, Data.Bind.ObjectScope, System.JSON,
-  REST.Authenticator.OAuth.WebForm.Win, REST.Authenticator.OAuth;
+  REST.Authenticator.OAuth.WebForm.Win, REST.Authenticator.OAuth,
+  System.DateUtils;
 
 type
   TdmNutri = class(TDataModule)
@@ -15,6 +16,7 @@ type
     OAuth2Authenticator1: TOAuth2Authenticator;
   private
     { Private declarations }
+    validadeToken: TDateTime;
     const
       CLIENT_ID = 'c6b62dd5b2d14119895c74243a55c7de';
       CLIENT_SECRET = '4999cdabd84146b5b35cbde9a984903e';
@@ -72,7 +74,14 @@ var
   clientToken: TRESTClient;
   responseToken: TRESTResponse;
   JSONObj: TJSONObject;
+  segundosValidade: Integer;
 begin
+  if (OAuth2Authenticator1.AccessToken <> '') and (Now < validadeToken) then
+  begin
+    Result := True;
+    Exit;
+  end;
+
   Result := False;
 
   clientToken := TRESTClient.Create(nil);
@@ -100,6 +109,12 @@ begin
         if Assigned(JSONObj) then
         begin
           OAuth2Authenticator1.AccessToken := JSONObj.GetValue<string>('access_token');
+
+          if JSONObj.TryGetValue<Integer>('expires_in', segundosValidade) then
+            validadeToken := IncSecond(Now, segundosValidade)
+          else
+            validadeToken := IncHour(Now, 23);
+
           Result := True;
         end;
       end
