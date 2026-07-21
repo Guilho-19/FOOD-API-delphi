@@ -82,10 +82,19 @@ begin
                 memResultado.Lines.Add('Resumo: ' + resumoTraduzido);
               end
               else
-              begin
                 memResultado.Lines.Add('Nenhum alimento encontrado com esse nome!');
-              end;
+            end
+            else
+            begin
+              memResultado.Lines.Add('A API retornou a lista de alimentos em um formato diferente!');
+              memResultado.Lines.Add('');
+              memResultado.Lines.Add(responseJSON);
             end;
+          end
+          else
+          begin
+            memResultado.Lines.Add('=== RETORNO INESPERADO DA API ===');
+            memResultado.Lines.Add(responseJSON);
           end;
         finally
           rootJSON.Free;
